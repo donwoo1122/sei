@@ -1,0 +1,40 @@
+Hướng dẫn ae tạo gentx From Vien Nguyen - Migoi Team cho vụ Sei incentive ở atlantis-1 chain
+1. Update seid to 1.0.6 version, kiểm tra version
+seid version
+
+2. Xóa seid cũ của Sei-testnet-2
+       systemctl stop seid && systemctl disable seid && rm -rf $HOME/.sei/
+3. Tạo gentx:
+Nếu bạn sử dụng ví Seid cũ thì bỏ qua bước tạo ví, còn ko thì tạo mới):
+Tạo ví mới: seid keys add YOUR_WALLET_NAME
+Recover ví cũ: seid keys add YOUR_WALLET_NAME --recover
+
+Tạo gentx
+SEID_CHAIN="atlantic-1"
+SEID_MONIKER="YOUR_MONIKER_NAME" 
+SEID_WALLET="YOUR_WALLET_NAME"
+seid init $SEID_MONIKER --chain-id $SEID_CHAIN
+seid config chain-id $SEID_CHAIN
+seid add-genesis-account $(seid keys show $SEID_WALLET -a) 10000000usei
+
+### Create gentx
+seid gentx $SEID_WALLET 10000000usei \
+--chain-id $SEID_CHAIN \
+--moniker=$SEID_MONIKER \
+--commission-max-change-rate=0.01 \
+--commission-max-rate=0.20 \
+--commission-rate=0.05 \
+--details="abcxyz"
+
+File gentx sẽ được tạo ở thư mục $HOME/.sei/config/gentx. Ktra file và nội dung
+ls $HOME/.sei/config/gentx
+cat $HOME/.sei/config/gentx/gentx*.json
+ 
+Upload gentx lên dự án Sei
+- Mở link [https://github.com/sei-protocol/testnet/tree/main/sei-incentivized-testnet/gentx] và chọn "Create new file"
+- Nhập tên file , và copy nội dung file gentx to Edit new file
+- Chọn Propose new file
+- Chọn Create Pull Request
+- Lại chọn Create Pull Request 
+- Link truy cập PR của bạn
+    https://github.com/sei-protocol/testnet/pull/XXX 
